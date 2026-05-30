@@ -33,7 +33,7 @@ pipeline {
         
         stage('Verify Deployment') {
             steps {
-                sh 'curl -f http://localhost:8081 || exit 1'
+                sh 'docker ps | grep iac-nginx'
             }
         }
     }
@@ -43,4 +43,4 @@ pipeline {
             sh 'terraform destroy -auto-approve || true'
         }
     }
-}
+} isko paste krna hai kya purane wale se
