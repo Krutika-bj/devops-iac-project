@@ -1,11 +1,6 @@
 pipeline {
     agent any
     
-    tools {
-        terraform 'terraform'
-        ansible 'ansible'
-    }
-    
     stages {
         stage('Checkout') {
             steps {
@@ -43,4 +38,4 @@ pipeline {
             sh 'terraform destroy -auto-approve || true'
         }
     }
-} isko paste krna hai kya purane wale se
+}
