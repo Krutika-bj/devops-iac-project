@@ -1,0 +1,12 @@
+- name: Configure nginx container
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Create custom index.html file
+      copy:
+        content: "<h1>Deployed by Terraform + Ansible!</h1>"
+        dest: /tmp/index.html
+    - name: Copy index.html into running container
+      command: docker cp /tmp/index.html iac-nginx:/usr/share/nginx/html/index.html
+    - name: Reload nginx service inside container
+      command: docker exec iac-nginx nginx -s reload
