@@ -17,8 +17,7 @@ The pipeline runs completely **on your local machine** with zero cloud cost, mak
 ```mermaid
 graph LR
     A[GitHub] -->|poll/push| B[Jenkins]
-    B -->|terraform apply| C[Docker Container (Nginx)]
-    C["Docker Container (Nginx)"]
-    C -->|ansible-playbook| D["Custom index.html"]
-    D -->|verify| E["docker ps"]
-    E -->|post always| F["terraform destroy"]
+    B -->|terraform_apply| C[Docker_Container_Nginx]
+    C -->|ansible_playbook| D[Custom_index.html]
+    D -->|verify| E[docker_ps]
+    E -->|post_always| F[terraform_destroy]
