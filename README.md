@@ -18,6 +18,7 @@ The pipeline runs completely **on your local machine** with zero cloud cost, mak
 graph LR
     A[GitHub] -->|poll/push| B[Jenkins]
     B -->|terraform apply| C[Docker Container (Nginx)]
-    C -->|ansible-playbook| D[Custom index.html]
-    D -->|verify| E[docker ps]
-    E -->|post always| F[terraform destroy]
+    C["Docker Container (Nginx)"]
+    C -->|ansible-playbook| D["Custom index.html"]
+    D -->|verify| E["docker ps"]
+    E -->|post always| F["terraform destroy"]
