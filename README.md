@@ -13,11 +13,36 @@ This project demonstrates an **end-to-end Infrastructure as Code (IaC) and CI/CD
 The pipeline runs completely **on your local machine** with zero cloud cost, making it perfect for learning and portfolio.
 
 ## 🏗️ Architecture
+graph TD
+    subgraph "Version Control (Optional)"
+        Dev[Developer] -->|git push| GitHub
+    end
 
-```mermaid
-graph LR
-    A[GitHub] -->|poll/push| B[Jenkins]
-    B -->|terraform_apply| C[Docker_Container_Nginx]
-    C -->|ansible_playbook| D[Custom_index.html]
-    D -->|verify| E[docker_ps]
-    E -->|post_always| F[terraform_destroy]
+    subgraph "Jenkins CI/CD Pipeline"
+        GitHub -->|webhook / poll SCM| Jenkins
+        Jenkins --> S1[Checkout Code]
+        S1 --> S2[Terraform Init & Plan]
+        S2 --> S3[Terraform Apply]
+        S3 --> S4[Ansible Playbook]
+        S4 --> S5[Verify Deployment]
+        S5 --> S6{Success?}
+    end
+
+    subgraph "Local Infrastructure (IaC)"
+        S3 -->|creates| Container[Docker Container: Nginx]
+        Container -->|runs on| DockerHost[Local Docker Engine]
+    end
+
+    subgraph "Configuration Management"
+        S4 -->|copy file| Index[Custom index.html]
+        Index -->|reload service| Container
+    end
+
+    subgraph "Verification & Cleanup"
+        S5 -->|curl http://localhost| Health[HTTP 200 OK]
+        Health -->|pass| Notify[✅ Slack/Email]
+        S6 -->|No| Rollback[Terraform Destroy]
+        Rollback --> Notify
+        S6 -->|Yes| End[Pipeline Complete]
+        Notify --> End
+    end
