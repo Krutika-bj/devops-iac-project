@@ -12,14 +12,12 @@ This project demonstrates an **end-to-end Infrastructure as Code (IaC) and CI/CD
 
 The pipeline runs completely **on your local machine** with zero cloud cost, making it perfect for learning and portfolio.
 
-## 🏗️ Architecture
-graph TD
-    subgraph "Version Control (Optional)"
-        Dev[Developer] -->|git push| GitHub
-    end
+## 🏗️ Architecture Diagram
 
+```mermaid
+graph TD
     subgraph "Jenkins CI/CD Pipeline"
-        GitHub -->|webhook / poll SCM| Jenkins
+        GitHub[GitHub] -->|webhook / poll SCM| Jenkins[Jenkins]
         Jenkins --> S1[Checkout Code]
         S1 --> S2[Terraform Init & Plan]
         S2 --> S3[Terraform Apply]
